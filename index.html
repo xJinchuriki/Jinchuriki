@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Okey Helper by Jinchuriki</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800&family=Share+Tech+Mono&family=Cinzel:wght@600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="void"></div>
+  <div class="hero-wash"></div>
+  <aside class="sentinel left-sentinel">
+    <img src="igris.jpg" alt="Igris" />
+    <div class="sentinel-meta">
+      <small>SHADOW SOLDIER</small>
+      <strong>IGRIS</strong>
+      <em>Blood-Red Knight</em>
+    </div>
+  </aside>
+  <aside class="sentinel right-sentinel">
+    <img src="jinwoo.jpg" alt="Sung Jin-Woo" />
+    <div class="sentinel-meta">
+      <small>SHADOW MONARCH</small>
+      <strong>SUNG JIN-WOO</strong>
+      <em>The Player</em>
+    </div>
+  </aside>
+  <div class="scanlines"></div>
+  <div id="failModal" class="fail-modal" hidden>
+    <div class="fail-box">
+      <div class="fail-tag" id="sysTag">[ SYSTEM ]</div>
+      <p id="sysMsg" data-i18n="sorryBro">Es tut mir Leid Bruder, mehr ist nicht drin. Lass uns nochmal von vorne anfangen.</p>
+      <button id="btnSysReset" type="button" class="danger" data-i18n="newGame">NEUES SPIEL</button>
+      <button id="btnFailOk" type="button" data-i18n="gotIt">VERSTANDEN</button>
+      <button id="btnContinue" type="button" class="ghost" data-i18n="keepGoing">trotzdem weiterspielen</button>
+    </div>
+  </div>
+  <div id="helpModal" class="fail-modal" hidden>
+    <div class="fail-box">
+      <div class="fail-tag">[ HOTKEYS ]</div>
+      <p id="helpBody" class="help-body"></p>
+      <button id="btnHelpOk" type="button" data-i18n="gotIt">VERSTANDEN</button>
+    </div>
+  </div>
+  <div id="ariseFx" class="arise-fx" hidden>
+    <div class="arise-ring"></div>
+    <div class="arise-word">ARISE</div>
+    <div class="arise-sub">GOLD CHEST LOCKED</div>
+  </div>
+
+  <header class="top">
+    <div class="lang-bar" id="langBar" role="navigation" aria-label="Language">
+      <button type="button" data-lang="de" class="lang-btn on">DE</button>
+      <button type="button" data-lang="en" class="lang-btn">EN</button>
+      <button type="button" data-lang="tr" class="lang-btn">TR</button>
+      <button type="button" data-lang="ro" class="lang-btn">RO</button>
+      <button type="button" data-lang="pl" class="lang-btn">PL</button>
+      <button type="button" data-lang="es" class="lang-btn">ES</button>
+      <button type="button" id="btnHelp" class="lang-btn" title="Hotkeys">?</button>
+    </div>
+    <div class="brand">
+      <div class="sys-tag">[ SYSTEM NOTICE ]</div>
+      <h1>OKEY HELPER</h1>
+      <div class="by">by <span>Jinchuriki</span></div>
+    </div>
+    <p class="sub" data-i18n="sub">Fünf Karten eintragen. Der Monarch sagt dir, welche drei du spielst oder welche eine du wegwirfst.</p>
+    <div class="top-actions">
+      <label class="toggle"><input type="checkbox" id="practice" /> <span data-i18n="practice">Übungsmodus</span></label>
+      <button id="btnUndo" type="button" data-i18n="undo">Rückgängig</button>
+      <button id="btnReset" type="button" class="danger" data-i18n="newRound">NEUE RUNDE</button>
+    </div>
+  </header>
+
+  <main class="layout">
+    <aside class="col left">
+      <section class="panel chance-panel">
+        <div class="panel-title" data-i18n="liveOdds">Live-Wahrscheinlichkeit</div>
+        <div class="meters">
+          <div class="meter gold">
+            <div class="meter-label"><span>GOLD</span><b id="pGold">—</b></div>
+            <div class="meter-bar"><i id="barGold"></i></div>
+          </div>
+          <div class="meter silver">
+            <div class="meter-label"><span>SILBER</span><b id="pSilver">—</b></div>
+            <div class="meter-bar"><i id="barSilver"></i></div>
+          </div>
+          <div class="meter bronze">
+            <div class="meter-label"><span>BRONZE</span><b id="pBronze">—</b></div>
+            <div class="meter-bar"><i id="barBronze"></i></div>
+          </div>
+        </div>
+        <p class="hint" id="evalNote" data-i18n="wait5">Warte auf 5 offene Karten.</p>
+      </section>
+
+      <section class="panel">
+        <div class="panel-title" data-i18n="vault">Kisten-Archiv</div>
+        <div class="vault">
+          <div class="vault-total">
+            <span data-i18n="opened">Gesamt geöffnet</span>
+            <strong id="cTotal">0</strong>
+          </div>
+          <div class="vault-grid">
+            <div class="v gold"><em>Gold</em><b id="cGold">0</b><small id="cGoldPct">0%</small></div>
+            <div class="v silver"><em>Silber</em><b id="cSilver">0</b><small id="cSilverPct">0%</small></div>
+            <div class="v bronze"><em>Bronze</em><b id="cBronze">0</b><small id="cBronzePct">0%</small></div>
+          </div>
+        </div>
+        <p class="hint" data-i18n="vaultHint">Zählt jede beendete Runde. Bleibt im Browser gespeichert.</p>
+        <button id="btnResetStats" type="button" class="ghost" data-i18n="resetVault">Archiv zurücksetzen</button>
+      </section>
+
+      <section class="panel">
+        <div class="panel-title" data-i18n="clan">Alle Spieler</div>
+        <div class="vault">
+          <div class="vault-total">
+            <span data-i18n="clanOpened">Zusammen geöffnet</span>
+            <strong id="gTotal">57146</strong>
+          </div>
+          <div class="vault-grid">
+            <div class="v gold"><em>Gold</em><b id="gGold">13144</b><small id="gGoldPct">23%</small></div>
+            <div class="v silver"><em>Silber</em><b id="gSilver">34859</b><small id="gSilverPct">61%</small></div>
+            <div class="v bronze"><em>Bronze</em><b id="gBronze">9143</b><small id="gBronzePct">16%</small></div>
+          </div>
+        </div>
+        <p class="hint" id="clanHint" data-i18n="clanHint">Gemeinsamer Stand aller, die diese Version online nutzen.</p>
+      </section>
+
+      <section class="panel">
+        <div class="panel-title" data-i18n="session">Sitzung</div>
+        <dl class="stats">
+          <div><dt data-i18n="rounds">Runden</dt><dd id="sGames">0</dd></div>
+          <div><dt data-i18n="avg">Schnitt</dt><dd id="sAvg">–</dd></div>
+          <div><dt>Gold</dt><dd id="sGold">0</dd></div>
+          <div><dt>Silber</dt><dd id="sSilver">0</dd></div>
+          <div><dt>Bronze</dt><dd id="sBronze">0</dd></div>
+        </dl>
+      </section>
+      <section class="panel">
+        <div class="panel-title" data-i18n="badges">Erfolge</div>
+        <div id="badgeGrid" class="badges"></div>
+      </section>
+    </aside>
+
+    <section class="col mid">
+      <div id="cmdBanner" class="cmd-banner wait">5 Karten eintragen – dann steht hier genau, was du tun sollst.</div>
+      <div class="panel-title center" data-i18n="fieldTitle">Karten auf dem Feld</div>
+      <div id="field" class="field"></div>
+
+      <div class="panel-title" data-i18n="palette">Schatten-Palette</div>
+      <div id="palette" class="palette"></div>
+      <p class="keys">
+        <kbd>R</kbd>/<kbd>B</kbd>/<kbd>Y</kbd> + <kbd>1–8</kbd>
+        · Klick = Pick · Rechtsklick = Abwurf
+        · <kbd>Leertaste</kbd> Vorschlag · <kbd>Enter</kbd> bestätigen
+      </p>
+
+      <section class="panel remain-panel">
+        <div class="panel-title"><span data-i18n="remain">Verbleibende Karten</span> <span id="remainCount"></span></div>
+        <div id="remainGrid" class="mini-grid"></div>
+      </section>
+    </section>
+
+    <aside class="col right">
+      <section class="panel scorebox">
+        <div class="panel-title" data-i18n="points">Punkte</div>
+        <div class="big" id="score">0</div>
+        <div class="bar"><i id="barFill"></i></div>
+        <div class="targets"><span data-i18n="silver300">SILBER 300</span><span data-i18n="gold400">GOLD 400</span></div>
+        <div class="chest-now" id="chestNow">BRONZE</div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-title" data-i18n="yourPick">Dein Pick</div>
+        <div id="pickRow" class="pick-row"></div>
+        <p class="hint" id="pickPts" data-i18n="mark3">3 Karten auf dem Feld markieren.</p>
+        <button id="btnConfirm" type="button" disabled>KOMBI BESTÄTIGEN</button>
+      </section>
+
+      <section class="panel suggest hunt-panel">
+        <div class="panel-title" data-i18n="hunter">Hunter-System</div>
+        <div class="rank-name" id="rankName">AMATEUR</div>
+        <div class="lv-line"><span id="lvNow">LV.1</span><span id="lvNeed">0 / 50 EXP</span></div>
+        <div class="xp-track" id="xpTrack">
+          <i id="xpFill"></i>
+        </div>
+        <div class="arena" id="arena">
+          <img class="arena-gif" src="jinwoo-idle.gif" alt="Sung Jin-Woo" />
+        </div>
+        <div class="xp-gain" id="xpGain"></div>
+        <div id="suggestion" class="cmd-mini" hidden>Welche 5 Karten hat das System ausgeteilt?</div>
+        <button id="btnUse" type="button" disabled data-i18n="exec">BEFEHL AUSFÜHREN</button>
+      </section>
+
+      <section class="panel log-panel">
+        <button type="button" class="log-toggle" id="logToggle" data-i18n="log">Kampflog ▾</button>
+        <div class="recent-box">
+          <div class="panel-title" data-i18n="last10">Letzte 10 Runden</div>
+          <div id="recentList" class="recent"></div>
+        </div>
+        <ol id="log" class="log"></ol>
+      </section>
+    </aside>
+  </main>
+
+  <footer>
+    Okey Helper by Jinchuriki · Jogoe-Logik · Probe v18c
+  </footer>
+
+  <script src="i18n.js"></script>
+  <script src="engine-bundle.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
