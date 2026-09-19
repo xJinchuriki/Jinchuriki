@@ -156,7 +156,9 @@
       if (hitS) return takeOf(hitS);
       if (combos[0].pts >= 30) return takeOf(combos[0]);
       if (combos[0].pts >= 10 && remain.length <= 8) return takeOf(combos[0]);
+      if (!remain.length) return takeOf(combos[0]);
     }
+    if (!remain.length) return null;
     if (!live.length) return null;
     const dump = live.slice().sort((a, b) => parse(a).n - parse(b).n)[0];
     return { kind: "discard", ids: [dump], pts: 0, afterScore: score };
@@ -715,7 +717,10 @@
   }
 
   function fieldReady() {
-    return state.field.every(Boolean);
+    const n = state.field.filter(Boolean).length;
+    if (n === 5) return true;
+    if (state.remain.size === 0 && n >= 3) return true;
+    return false;
   }
 
   /* ---------- UI ---------- */
@@ -889,9 +894,13 @@
         $("evalNote").textContent = t("nextCard");
       }
       if (ban) {
-        ban.textContent = filled
-          ? "Noch " + (5 - filled) + " Karte(n) eintragen."
-          : t("waitCmd");
+        if (state.remain.size === 0) {
+          ban.textContent = "Stapel leer.";
+        } else {
+          ban.textContent = filled
+            ? "Noch " + (5 - filled) + " Karte(n) eintragen."
+            : t("waitCmd");
+        }
       }
       if (!fresh) checkNotices();
       return;
@@ -899,7 +908,11 @@
     const field = state.field.slice();
     const remain = [...state.remain];
     const live = field.filter(Boolean);
-    const act = engineMove(live, remain, state.score);
+    let act = engineMove(live, remain, state.score);
+    if (!remain.length) {
+      const only = allCombos(live)[0];
+      act = only ? { kind: "take", ids: only.ids, pts: only.pts } : null;
+    }
     const left = live.length + remain.length;
     const odds = chestOdds(state.score);
     let res;
