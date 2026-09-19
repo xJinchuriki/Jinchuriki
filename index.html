@@ -12,6 +12,9 @@
 <body>
   <div class="void"></div>
   <div class="hero-wash"></div>
+  <div class="crack-bg" aria-hidden="true">
+    <img src="igris-crack.gif" alt="" />
+  </div>
   <aside class="sentinel left-sentinel">
     <img src="igris.jpg" alt="Igris" />
     <div class="sentinel-meta">
@@ -29,6 +32,7 @@
     </div>
   </aside>
   <div class="scanlines"></div>
+  <audio id="bgm" src="dark-aria.mp3" loop preload="auto"></audio>
   <div id="failModal" class="fail-modal" hidden>
     <div class="fail-box">
       <div class="fail-tag" id="sysTag">[ SYSTEM ]</div>
@@ -46,6 +50,7 @@
     </div>
   </div>
   <div id="ariseFx" class="arise-fx" hidden>
+    <img id="ariseGif" class="arise-gif" src="igris-crack.gif" alt="" />
     <div class="arise-ring"></div>
     <div class="arise-word">ARISE</div>
     <div class="arise-sub">GOLD CHEST LOCKED</div>
@@ -71,6 +76,7 @@
       <label class="toggle"><input type="checkbox" id="practice" /> <span data-i18n="practice">Übungsmodus</span></label>
       <button id="btnUndo" type="button" data-i18n="undo">Rückgängig</button>
       <button id="btnReset" type="button" class="danger" data-i18n="newRound">NEUE RUNDE</button>
+      <button id="btnMusic" type="button">MUSIK</button>
     </div>
   </header>
 
@@ -206,7 +212,7 @@
   </main>
 
   <footer>
-    Okey Helper by Jinchuriki · Jogoe-Logik · Probe v18c
+    Okey Helper by Jinchuriki
   </footer>
 
   <script src="i18n.js"></script>

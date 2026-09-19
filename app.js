@@ -547,6 +547,8 @@
 
   function playArise() {
     const fx = $("ariseFx");
+    const ag = $("ariseGif");
+    if (ag) ag.src = "igris-crack.gif?t=" + Date.now();
     fx.hidden = false;
     fx.classList.add("is-open");
     setTimeout(() => {
@@ -717,10 +719,6 @@
     for (const c of COLORS) {
       const row = document.createElement("div");
       row.className = "prow " + c;
-      const lab = document.createElement("span");
-      lab.className = "prow-lab";
-      lab.textContent = COLOR_NAME[c];
-      row.appendChild(lab);
       for (let n = 1; n <= 8; n++) {
         const id = c + n;
         const el = document.createElement("button");
@@ -789,10 +787,6 @@
     for (const c of COLORS) {
       const row = document.createElement("div");
       row.className = "remain-row";
-      const lab = document.createElement("span");
-      lab.className = "remain-lab";
-      lab.textContent = COLOR_NAME[c];
-      row.appendChild(lab);
       for (let n = 1; n <= 8; n++) {
         const id = c + n;
         const d = document.createElement("div");
@@ -1209,6 +1203,22 @@
   renderBadges();
   loadClan();
   updateSuggestion();
+  if ($("btnMusic")) {
+    const bgm = $("bgm");
+    if (bgm) bgm.volume = 0.45;
+    $("btnMusic").addEventListener("click", () => {
+      if (!bgm) return;
+      if (bgm.paused) {
+        bgm.play().catch(() => {});
+        $("btnMusic").classList.add("on");
+        $("btnMusic").textContent = "MUSIK AN";
+      } else {
+        bgm.pause();
+        $("btnMusic").classList.remove("on");
+        $("btnMusic").textContent = "MUSIK";
+      }
+    });
+  }
   $("btnHelp").addEventListener("click", () => {
     $("helpBody").textContent = t("helpTxt");
     $("helpModal").hidden = false;
