@@ -551,6 +551,12 @@
     if (ag) ag.src = "igris-crack.gif?t=" + Date.now();
     fx.hidden = false;
     fx.classList.add("is-open");
+    const sfx = $("ariseSfx");
+    if (sfx) {
+      try { sfx.currentTime = 0; } catch (_) {}
+      sfx.volume = 0.9;
+      sfx.play().catch(() => {});
+    }
     setTimeout(() => {
       fx.hidden = true;
       fx.classList.remove("is-open");
