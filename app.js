@@ -480,7 +480,7 @@
   }
 
   const CLAN = "okey-jinchuriki-clan";
-  const CLAN_SEED = { gold: 13144, silver: 34859, bronze: 9143, total: 57146 };
+  const CLAN_SEED = { gold: 3188, silver: 25227, bronze: 28843, total: 57258 };
   const CLAN_API = "https://abacus.jasoncameron.dev";
   async function clanGet(key) {
     const r = await fetch(CLAN_API + "/get/" + CLAN + "/" + key);
