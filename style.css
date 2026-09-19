@@ -428,6 +428,7 @@ kbd { border: 1px solid var(--line); padding: 0 5px; color: var(--glow); }
 .bar { height: 8px; background: #061018; margin: 8px 0; overflow: hidden; }
 .bar i { display: block; height: 100%; width: 0; background: linear-gradient(90deg, var(--bronze), var(--silver), var(--gold)); }
 .targets { display: flex; justify-content: space-between; color: var(--muted); font-size: 11px; letter-spacing: .08em; }
+.max-pts { margin-top: 8px; font-size: 12px; letter-spacing: .08em; color: var(--muted); }
 .chest-now { margin-top: 8px; font-family: Orbitron, sans-serif; letter-spacing: .14em; }
 .pick-row { display: flex; gap: 8px; min-height: 74px; }
 .hunt-panel { overflow: visible; }

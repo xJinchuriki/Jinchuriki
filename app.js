@@ -840,6 +840,14 @@
     const ch = chest(state.score);
     $("chestNow").textContent = ch === "gold" ? "Gold" : ch === "silver" ? "Silber" : "Bronze";
     $("chestNow").style.color = ch === "gold" ? "var(--gold)" : ch === "silver" ? "var(--silver)" : "var(--bronze)";
+    const pool = cardsLeftPool();
+    const extra = pool.length <= 14 ? exactMaxPack(pool) : packPoints(pool);
+    const cap = state.score + extra;
+    const el = $("maxPts");
+    if (el) {
+      el.textContent = "Max. möglich " + cap;
+      el.style.color = cap >= 400 ? "var(--gold)" : cap >= 300 ? "var(--silver)" : "var(--bronze)";
+    }
   }
 
   function renderSession() {
